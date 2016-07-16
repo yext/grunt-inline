@@ -89,14 +89,7 @@ module.exports = function(grunt) {
 	}
 
 	function soyEscape(contents) {
-		// return contents.replace(/(\{([^}]+)\})/gmi, '{lb}$2{rb}');
-		var left = "|XXXXXLEFT_BRACEXXXXX|", right = "|XXXXXRIGHT_BRACEXXXXX|";
-		contents = contents.replace('{', left);
-		contents = contents.replace('}', right);
-		contents = contents.replace(left, '{lb}');
-		contents = contents.replace(right, '{rb}');
-		console.log(contents);
-		return contents;
+		return contents.replace(/(\{([^}]+)\})/gmi, '{lb}$2{rb}');
 	}
 
 	function isBase64Path( url ){
