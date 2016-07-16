@@ -69,7 +69,7 @@ module.exports = function(grunt) {
 		grunt.log.debug( 'sourceFilePath: '+ sourceFilePath);
 		grunt.log.debug( 'absoluteImgurl: '+ absolute);
 		grunt.log.debug( 'relativeToBase: '+ relativeToBase);
-		return '{$baseUrl}' + relativeToBase;
+		return '{/literal}{$baseUrl}{literal}' + relativeToBase;
 	}
 
 	function dataUriContent(assetUrl, sourceFilePath) {
@@ -89,7 +89,14 @@ module.exports = function(grunt) {
 	}
 
 	function soyEscape(contents) {
-		return contents.replace(/(\{([^}]+)\})/gmi, '{lb}$2{rb}');
+		// return contents.replace(/(\{([^}]+)\})/gmi, '{lb}$2{rb}');
+		var left = "|XXXXXLEFT_BRACEXXXXX|", right = "|XXXXXRIGHT_BRACEXXXXX|";
+		contents = contents.replace('{', left);
+		contents = contents.replace('}', right);
+		contents = contents.replace(left, '{lb}');
+		contents = contents.replace(right, '{rb}');
+		console.log(contents);
+		return contents;
 	}
 
 	function isBase64Path( url ){
@@ -254,8 +261,6 @@ module.exports = function(grunt) {
         filepath = filepath.replace(/[^\/]+\//g, relativeTo);
     }
 
-		fileContent = soyEscape(fileContent);
-
 		fileContent = fileContent.replace(/url\(["']*([^)'"]+)["']*\)/g, function(matchedWord, imgUrl){
 			var urlReplacement = imgUrl;
 			var flag = !!imgUrl.match(/\?__inline/);	// urls like "img/bg.png?__inline" will be transformed to base64
@@ -272,6 +277,6 @@ module.exports = function(grunt) {
 		});
 		fileContent = options.cssmin ? CleanCSS.process(fileContent) : fileContent;
 
-		return fileContent;
+		return '{literal}' + fileContent + '{/literal}';
 	}
 };
