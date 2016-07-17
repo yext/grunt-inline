@@ -164,7 +164,7 @@ module.exports = function(grunt) {
 			var ret = matchedWord;
 
 			if(!isRemotePath(src) && src.indexOf(options.tag)!=-1){
-				var inlineFilePath = path.resolve( path.dirname(filepath), src ).replace(/\?.*$/, '');	// 将参数去掉
+				var inlineFilePath = path.resolve( path.dirname(filepath), src );
 				var c = options.uglify ? UglifyJS.minify(inlineFilePath).code : grunt.file.read( inlineFilePath );
 				if( grunt.file.exists(inlineFilePath) ){
 					ret = '<script>\n' + c + '\n</script>';
@@ -181,7 +181,7 @@ module.exports = function(grunt) {
 
 			if(!isRemotePath(src) && src.indexOf(options.tag)!=-1){
 
-				var inlineFilePath = path.resolve( path.dirname(filepath), src ).replace(/\?.*$/, '');	// 将参数去掉
+				var inlineFilePath = path.resolve( path.dirname(filepath), src );
 
 				if( grunt.file.exists(inlineFilePath) ){
 					var styleSheetContent = grunt.file.read( inlineFilePath );
@@ -198,7 +198,7 @@ module.exports = function(grunt) {
 
 			if(!grunt.file.isPathAbsolute(src) && src.indexOf(options.tag)!=-1){
 
-				var inlineFilePath = path.resolve( path.dirname(filepath), src ).replace(/\?.*$/, '');	// 将参数去掉
+				var inlineFilePath = path.resolve( path.dirname(filepath), src );
 
 				if( grunt.file.exists(inlineFilePath) ){
 					ret = matchedWord.replace(src, (new datauri(inlineFilePath)).content);
